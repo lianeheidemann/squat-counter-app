@@ -1,79 +1,47 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/services/sensor_service.dart';
-
 import '../controllers/workout_controller.dart';
 import '../widgets/progress_card.dart';
 
-/// Tela principal do treino
 class WorkoutSessionScreen extends StatefulWidget {
-
   final WorkoutController controller;
-
-  const WorkoutSessionScreen({
-    super.key,
-    required this.controller,
-  });
+  const WorkoutSessionScreen({super.key, required this.controller});
 
   @override
-  State<WorkoutSessionScreen> createState() =>
-      _WorkoutSessionScreenState();
+  State<WorkoutSessionScreen> createState() => _WorkoutSessionScreenState();
 }
 
-class _WorkoutSessionScreenState
-    extends State<WorkoutSessionScreen> {
-
-  final SensorService sensorService =
-      SensorService();
-
+class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
+  final SensorService sensorService = SensorService();
   bool trainingStarted = false;
-
   double x = 0;
   double y = 0;
   double z = 0;
 
   @override
   void dispose() {
-
     sensorService.stopListening();
-
     super.dispose();
   }
 
-  /// Inicia sensores
   void startTraining() {
-
     sensorService.startListening(
-
       onSquatDetected: () {
-
+        if (!mounted) return;
         setState(() {
-
           widget.controller.incrementRep();
-
-          // Verifica se treino terminou
           if (widget.controller.workoutFinished) {
-
             sensorService.stopListening();
-
             trainingStarted = false;
-
-            Future.delayed(
-              const Duration(milliseconds: 300),
-              () {
-                showFinishedDialog();
-              },
-            );
+            Future.delayed(const Duration(milliseconds: 300), () {
+              if (mounted) showFinishedDialog();
+            });
           }
         });
       },
-
-      onSensorChanged: (
-        sensorX,
-        sensorY,
-        sensorZ,
-      ) {
-
+      onSensorChanged: (sensorX, sensorY, sensorZ) {
+        if (!mounted) return;
         setState(() {
           x = sensorX;
           y = sensorY;
@@ -81,197 +49,170 @@ class _WorkoutSessionScreenState
         });
       },
     );
-
-    setState(() {
-      trainingStarted = true;
-    });
+    setState(() => trainingStarted = true);
   }
 
-  /// Reinicia treino
   void resetTraining() {
-
     sensorService.stopListening();
-
     widget.controller.resetWorkout();
-
     setState(() {
-
       trainingStarted = false;
-
       x = 0;
       y = 0;
       z = 0;
     });
   }
 
-  /// Exibe mensagem de treino concluído
   void showFinishedDialog() {
-
-    showDialog(
-
+    showDialog<void>(
       context: context,
-
-      builder: (_) {
-
-        return AlertDialog(
-
-          title: const Text(
-            'Treino Concluído 🎉',
+      builder: (dialogContext) => AlertDialog(
+        icon: const Icon(Icons.emoji_events_rounded, size: 42),
+        title: const Text('Treino concluído!'),
+        content: const Text(
+          'Parabéns! Você completou todas as séries planejadas.',
+          textAlign: TextAlign.center,
+        ),
+        actionsAlignment: MainAxisAlignment.center,
+        actions: [
+          FilledButton(
+            onPressed: () {
+              Navigator.pop(dialogContext);
+              resetTraining();
+            },
+            child: const Text('Treinar novamente'),
           ),
-
-          content: const Text(
-            'Parabéns! Você finalizou todas as séries do treino.',
-          ),
-
-          actions: [
-
-            TextButton(
-
-              onPressed: () {
-
-                Navigator.pop(context);
-
-                resetTraining();
-              },
-
-              child: const Text(
-                'Reiniciar',
-              ),
-            ),
-          ],
-        );
-      },
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    final controller = widget.controller;
+    final statusColor = trainingStarted
+        ? const Color(0xFF16865B)
+        : colors.onSurfaceVariant;
 
     return Scaffold(
-
-      appBar: AppBar(
-        title: const Text('Treino'),
-      ),
-
+      appBar: AppBar(title: const Text('Treino em andamento')),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-
-              ProgressCard(
-                title: 'Série Atual',
-
-                value:
-                    '${widget.controller.currentSet}'
-                    '/${widget.controller.config.totalSets}',
-              ),
-
-              const SizedBox(height: 20),
-
-              ProgressCard(
-                title: 'Repetições',
-
-                value:
-                    '${widget.controller.currentRep}'
-                    '/${widget.controller.config.repsPerSet}',
-              ),
-
-              const SizedBox(height: 30),
-
-              Text(
-                trainingStarted
-                    ? 'Sensores ativos'
-                    : 'Treino parado',
-
-                style: const TextStyle(
-                  fontSize: 20,
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 13,
                 ),
-              ),
-
-              const SizedBox(height: 20),
-
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-
-                  child: Column(
-                    children: [
-
-                      const Text(
-                        'Valores do Acelerômetro',
-
+                decoration: BoxDecoration(
+                  color: statusColor.withValues(alpha: 0.10),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      trainingStarted
+                          ? Icons.sensors_rounded
+                          : Icons.pause_circle_outline_rounded,
+                      color: statusColor,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        trainingStarted
+                            ? 'Contagem automática ativa'
+                            : 'Pronto para começar',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                          color: statusColor,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
-
-                      const SizedBox(height: 12),
-
-                      Text(
-                        'X: ${x.toStringAsFixed(2)}',
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 18),
+              Row(
+                children: [
+                  Expanded(
+                    child: ProgressCard(
+                      title: 'Série atual',
+                      current: controller.currentSet,
+                      total: controller.config.totalSets,
+                      icon: Icons.layers_rounded,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ProgressCard(
+                      title: 'Repetições',
+                      current: controller.currentRep,
+                      total: controller.config.repsPerSet,
+                      icon: Icons.repeat_rounded,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 18),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.phone_android_rounded,
+                            color: colors.primary,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            'Movimento do celular',
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.w700),
+                          ),
+                        ],
                       ),
-
+                      const SizedBox(height: 6),
                       Text(
-                        'Y: ${y.toStringAsFixed(2)}',
+                        'Leitura do acelerômetro em tempo real',
+                        style: Theme.of(context).textTheme.bodySmall
+                            ?.copyWith(color: colors.onSurfaceVariant),
                       ),
-
-                      Text(
-                        'Z: ${z.toStringAsFixed(2)}',
+                      const SizedBox(height: 18),
+                      Row(
+                        children: [
+                          _SensorValue(axis: 'X', value: x),
+                          _SensorValue(axis: 'Y', value: y),
+                          _SensorValue(axis: 'Z', value: z),
+                        ],
                       ),
                     ],
                   ),
                 ),
               ),
-
-              const Spacer(),
-
-              SizedBox(
-                width: double.infinity,
-
-                child: ElevatedButton(
-
-                  onPressed: trainingStarted
-                      ? null
-                      : startTraining,
-
-                  child: const Padding(
-                    padding: EdgeInsets.all(16),
-
-                    child: Text(
-                      'Iniciar Sensores',
-
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
+              const SizedBox(height: 24),
+              ElevatedButton.icon(
+                onPressed: trainingStarted ? null : startTraining,
+                icon: Icon(
+                  trainingStarted
+                      ? Icons.sensors_rounded
+                      : Icons.play_arrow_rounded,
+                ),
+                label: Text(
+                  trainingStarted ? 'Sensores ativos' : 'Iniciar contagem',
                 ),
               ),
-
               const SizedBox(height: 12),
-
-              SizedBox(
-                width: double.infinity,
-
-                child: ElevatedButton(
-
-                  onPressed: resetTraining,
-
-                  child: const Padding(
-                    padding: EdgeInsets.all(16),
-
-                    child: Text(
-                      'Resetar Treino',
-
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                ),
+              OutlinedButton.icon(
+                onPressed: resetTraining,
+                icon: const Icon(Icons.refresh_rounded),
+                label: const Text('Reiniciar treino'),
               ),
             ],
           ),
@@ -279,4 +220,30 @@ class _WorkoutSessionScreenState
       ),
     );
   }
+}
+
+class _SensorValue extends StatelessWidget {
+  final String axis;
+  final double value;
+  const _SensorValue({required this.axis, required this.value});
+
+  @override
+  Widget build(BuildContext context) => Expanded(
+    child: Column(
+      children: [
+        Text(
+          axis,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 5),
+        Text(
+          value.toStringAsFixed(2),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+        ),
+      ],
+    ),
+  );
 }

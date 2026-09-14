@@ -4,7 +4,6 @@ import 'package:sensors_plus/sensors_plus.dart';
 
 /// Serviço responsável pelos sensores
 class SensorService {
-
   StreamSubscription? _accelerometerSubscription;
 
   bool canCount = true;
@@ -13,16 +12,9 @@ class SensorService {
   void startListening({
     required Function onSquatDetected,
 
-    required Function(
-      double x,
-      double y,
-      double z,
-    ) onSensorChanged,
+    required Function(double x, double y, double z) onSensorChanged,
   }) {
-
-    _accelerometerSubscription =
-        accelerometerEventStream().listen((event) {
-
+    _accelerometerSubscription = accelerometerEventStream().listen((event) {
       final x = event.x;
       final y = event.y;
       final z = event.z;
@@ -34,24 +26,17 @@ class SensorService {
       Detecta movimento forte em qualquer eixo
       */
 
-      final movementDetected =
-          x.abs() > 12 ||
-          y.abs() > 12 ||
-          z.abs() > 12;
+      final movementDetected = x.abs() > 12 || y.abs() > 12 || z.abs() > 12;
 
       if (movementDetected && canCount) {
-
         canCount = false;
 
         onSquatDetected();
 
         // Cooldown
-        Future.delayed(
-          const Duration(milliseconds: 1500),
-          () {
-            canCount = true;
-          },
-        );
+        Future.delayed(const Duration(milliseconds: 1500), () {
+          canCount = true;
+        });
       }
     });
   }
