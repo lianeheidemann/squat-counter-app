@@ -1,6 +1,6 @@
 <div align="center" >
 
-<img width="120" src="assets/squat-counter-icon.png">
+<img width="120" src="assets/squat-counter-icon-v2.png">
 
 # Squat Counter App
 
