@@ -47,11 +47,14 @@ jobs:
       - name: Build release APK
         run: flutter build apk --release
 
+      - name: Name release APK
+        run: cp build/app/outputs/flutter-apk/app-release.apk squat-counter-v1.2.0-new-interface.apk
+
       - name: Upload temporary APK
         uses: actions/upload-artifact@v4
         with:
-          name: squat-counter-v1.1.0-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: squat-counter-v1.2.0-new-interface
+          path: squat-counter-v1.2.0-new-interface.apk
           retention-days: 7
           if-no-files-found: error
 
@@ -60,4 +63,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create v1.1.0             build/app/outputs/flutter-apk/app-release.apk#squat-counter-v1.1.0.apk             --title "v1.1.0 - Refined Workout Interface"             --notes "New compact dark interface inspired by the approved visual reference. Includes refined typography, smaller controls and cards, clearer workout progress, improved completion dialog, and the existing automatic squat counting features."
+          gh release create v1.2.0             squat-counter-v1.2.0-new-interface.apk             --title "v1.2.0 - New Editorial Interface"             --notes "A complete visual redesign based on the approved reference: new woman-squatting hero image, neutral charcoal-gray palette, lighter and smaller typography, compact controls, and clearer hierarchy. Automatic squat counting and all existing features are preserved."

@@ -34,10 +34,10 @@ class _WorkoutSetupScreenState extends State<WorkoutSetupScreen> {
     final colors = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
-        leadingWidth: 68,
+        leadingWidth: 54,
         leading: Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: Icon(Icons.fitness_center_rounded, color: colors.primary, size: 27),
+          padding: const EdgeInsets.only(left: 16),
+          child: Icon(Icons.fitness_center_rounded, color: colors.primary, size: 22),
         ),
         title: const Text('Squat Counter'),
         actions: [
@@ -46,40 +46,90 @@ class _WorkoutSetupScreenState extends State<WorkoutSetupScreen> {
             onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Settings will be available soon.')),
             ),
-            icon: const Icon(Icons.settings_outlined, size: 21),
+            icon: const Icon(Icons.settings_outlined),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 8),
         ],
       ),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) => SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(18, 8, 18, 22),
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 20),
             child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight - 30),
+              constraints: BoxConstraints(minHeight: constraints.maxHeight - 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    'STRONGER EVERY DAY',
-                    style: TextStyle(
-                      color: colors.onSurfaceVariant,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 2.4,
+                  Container(
+                    height: 224,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1A1E20),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: colors.outline),
+                    ),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: 16,
+                          top: 28,
+                          right: 160,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'STRONGER EVERY DAY',
+                                style: TextStyle(
+                                  color: colors.onSurfaceVariant,
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 2.0,
+                                ),
+                              ),
+                              const SizedBox(height: 11),
+                              Text(
+                                'Configure your\nworkout',
+                                style: Theme.of(context).textTheme.headlineMedium,
+                              ),
+                              const SizedBox(height: 9),
+                              Text(
+                                'Set your goal. Your phone counts every squat.',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          right: -6,
+                          bottom: -8,
+                          width: 190,
+                          height: 232,
+                          child: Image.asset(
+                            'assets/woman-squatting.png',
+                            fit: BoxFit.contain,
+                            alignment: Alignment.bottomRight,
+                            filterQuality: FilterQuality.high,
+                          ),
+                        ),
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          height: 38,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [Colors.transparent, const Color(0xFF1A1E20).withValues(alpha: 0.92)],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 9),
-                  Text(
-                    'Configure your\nworkout',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Set your goal and let your phone count every squat.',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  const SizedBox(height: 22),
+                  const SizedBox(height: 12),
                   NumberSelector(
                     title: 'Repetitions',
                     subtitle: 'per set',
@@ -88,7 +138,7 @@ class _WorkoutSetupScreenState extends State<WorkoutSetupScreen> {
                     onIncrease: () => setState(() => reps++),
                     onDecrease: reps > 1 ? () => setState(() => reps--) : null,
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 9),
                   NumberSelector(
                     title: 'Sets',
                     subtitle: 'in this workout',
@@ -97,55 +147,55 @@ class _WorkoutSetupScreenState extends State<WorkoutSetupScreen> {
                     onIncrease: () => setState(() => sets++),
                     onDecrease: sets > 1 ? () => setState(() => sets--) : null,
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 9),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
+                    padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 11),
                     decoration: BoxDecoration(
                       color: colors.surface,
                       border: Border.all(color: colors.outline),
-                      borderRadius: BorderRadius.circular(18),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     child: Row(
                       children: [
                         Container(
-                          width: 40,
-                          height: 40,
+                          width: 36,
+                          height: 36,
                           decoration: BoxDecoration(
-                            color: colors.primary.withValues(alpha: 0.12),
-                            borderRadius: BorderRadius.circular(12),
+                            color: colors.primary.withValues(alpha: 0.10),
+                            borderRadius: BorderRadius.circular(11),
                           ),
-                          child: Icon(Icons.flag_rounded, color: colors.primary, size: 21),
+                          child: Icon(Icons.flag_outlined, color: colors.primary, size: 19),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: 11),
                         Expanded(
                           child: Text(
                             'Total workout goal',
-                            style: TextStyle(color: colors.onSurfaceVariant, fontSize: 13),
+                            style: TextStyle(color: colors.onSurfaceVariant, fontSize: 12),
                           ),
                         ),
                         Text(
                           '$totalReps squats',
-                          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
+                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 22),
+                  const SizedBox(height: 15),
                   ElevatedButton.icon(
                     onPressed: _startWorkout,
-                    icon: const Icon(Icons.play_arrow_rounded, size: 21),
+                    icon: const Icon(Icons.play_arrow_rounded, size: 19),
                     label: const Text('Start workout'),
                   ),
-                  const SizedBox(height: 13),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.lock_outline_rounded, size: 14, color: colors.onSurfaceVariant),
-                      const SizedBox(width: 7),
+                      Icon(Icons.lock_outline_rounded, size: 13, color: colors.onSurfaceVariant),
+                      const SizedBox(width: 6),
                       Flexible(
                         child: Text(
                           'Keep your phone secure and close to your body.',
-                          style: TextStyle(color: colors.onSurfaceVariant, fontSize: 11),
+                          style: TextStyle(color: colors.onSurfaceVariant, fontSize: 10),
                         ),
                       ),
                     ],
