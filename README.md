@@ -14,7 +14,7 @@ detect and count squats, tracking repetitions and sets in real time.
 
 ---
 
-<img width="400" src="assets/squat-counter-interface-1 .webp" />
+<img width="450" src="assets/squat-counter-interface-1 .webp" />
 
 </div>
 
