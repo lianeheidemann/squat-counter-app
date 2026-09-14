@@ -30,10 +30,13 @@ jobs:
           cache: true
 
       - name: Generate Android project files
-        run: flutter create --platforms=android --project-name aplicativo_squat_counter --org com.lianeheidemann .
+        run: flutter create --platforms=android --project-name squat_counter_app --org com.lianeheidemann .
 
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Generate launcher icons
+        run: dart run flutter_launcher_icons
 
       - name: Analyze source
         run: flutter analyze

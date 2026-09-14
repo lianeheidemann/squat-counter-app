@@ -1,6 +1,6 @@
 import '../models/workout_config.dart';
 
-/// Controla estado do treino
+/// Manages workout configuration and progress.
 class WorkoutController {
   WorkoutConfig config = WorkoutConfig(repsPerSet: 10, totalSets: 3);
 
@@ -9,16 +9,16 @@ class WorkoutController {
 
   bool workoutFinished = false;
 
-  /// Incrementa repetição
+  /// Increments the repetition count.
   void incrementRep() {
-    // Não continua se treino acabou
+    // Ignore sensor events after the workout is complete.
     if (workoutFinished) return;
 
     currentRep++;
 
-    // Completou série
+    // Advance when the current set is complete.
     if (currentRep >= config.repsPerSet) {
-      // Última série
+      // Finish after the final set.
       if (currentSet >= config.totalSets) {
         workoutFinished = true;
       } else {
@@ -28,12 +28,12 @@ class WorkoutController {
     }
   }
 
-  /// Atualiza treino
+  /// Updates the workout configuration.
   void updateWorkout({required int reps, required int sets}) {
     config = WorkoutConfig(repsPerSet: reps, totalSets: sets);
   }
 
-  /// Reinicia treino
+  /// Resets workout progress.
   void resetWorkout() {
     currentRep = 0;
     currentSet = 1;

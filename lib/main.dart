@@ -7,7 +7,7 @@ void main() {
   runApp(const SquatCounterApp());
 }
 
-/// Widget principal do aplicativo
+/// Root widget for the application.
 class SquatCounterApp extends StatelessWidget {
   const SquatCounterApp({super.key});
 

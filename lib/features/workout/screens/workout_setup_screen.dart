@@ -53,18 +53,18 @@ class _WorkoutSetupScreenState extends State<WorkoutSetupScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Configure seu treino',
+                    'Configure your workout',
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Defina sua meta e deixe o celular contar cada agachamento.',
+                    'Set your goal and let your phone count every squat.',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 28),
                   NumberSelector(
-                    title: 'Repetições',
-                    subtitle: 'por série',
+                    title: 'Repetitions',
+                    subtitle: 'per set',
                     icon: Icons.repeat_rounded,
                     value: reps,
                     onIncrease: () => setState(() => reps++),
@@ -72,8 +72,8 @@ class _WorkoutSetupScreenState extends State<WorkoutSetupScreen> {
                   ),
                   const SizedBox(height: 14),
                   NumberSelector(
-                    title: 'Séries',
-                    subtitle: 'no treino',
+                    title: 'Sets',
+                    subtitle: 'in this workout',
                     icon: Icons.layers_rounded,
                     value: sets,
                     onIncrease: () => setState(() => sets++),
@@ -86,16 +86,17 @@ class _WorkoutSetupScreenState extends State<WorkoutSetupScreen> {
                       vertical: 16,
                     ),
                     decoration: BoxDecoration(
-                      color: colors.primaryContainer.withValues(alpha: 0.55),
+                      color: colors.primaryContainer.withValues(alpha: 0.42),
+                      border: Border.all(color: colors.outline),
                       borderRadius: BorderRadius.circular(18),
                     ),
                     child: Row(
                       children: [
                         Icon(Icons.flag_rounded, color: colors.primary),
                         const SizedBox(width: 12),
-                        const Expanded(child: Text('Meta total do treino')),
+                        const Expanded(child: Text('Total workout goal')),
                         Text(
-                          '$totalReps agachamentos',
+                          '$totalReps squats',
                           style: const TextStyle(fontWeight: FontWeight.w800),
                         ),
                       ],
@@ -105,11 +106,11 @@ class _WorkoutSetupScreenState extends State<WorkoutSetupScreen> {
                   ElevatedButton.icon(
                     onPressed: _startWorkout,
                     icon: const Icon(Icons.play_arrow_rounded),
-                    label: const Text('Começar treino'),
+                    label: const Text('Start workout'),
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Mantenha o celular firme junto ao corpo durante o exercício.',
+                    'Keep your phone secure and close to your body while exercising.',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodySmall
                         ?.copyWith(color: colors.onSurfaceVariant),

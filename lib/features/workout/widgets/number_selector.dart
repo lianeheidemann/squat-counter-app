@@ -55,7 +55,7 @@ class NumberSelector extends StatelessWidget {
               ),
             ),
             _StepButton(
-              tooltip: 'Diminuir $title',
+              tooltip: 'Decrease $title',
               icon: Icons.remove_rounded,
               onPressed: onDecrease,
             ),
@@ -71,7 +71,7 @@ class NumberSelector extends StatelessWidget {
               ),
             ),
             _StepButton(
-              tooltip: 'Aumentar $title',
+              tooltip: 'Increase $title',
               icon: Icons.add_rounded,
               onPressed: onIncrease,
             ),

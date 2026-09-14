@@ -1,4 +1,4 @@
-/// Representa as configurações do treino
+/// Immutable workout configuration.
 class WorkoutConfig {
   final int repsPerSet;
   final int totalSets;

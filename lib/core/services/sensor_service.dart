@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:sensors_plus/sensors_plus.dart';
 
-/// Serviço responsável pelos sensores
+/// Handles accelerometer readings and squat detection.
 class SensorService {
   StreamSubscription? _accelerometerSubscription;
 
   bool canCount = true;
 
-  /// Inicia leitura
+  /// Starts listening to accelerometer events.
   void startListening({
     required Function onSquatDetected,
 
@@ -19,11 +19,11 @@ class SensorService {
       final y = event.y;
       final z = event.z;
 
-      // Atualiza interface
+      // Sends the latest sensor values to the interface.
       onSensorChanged(x, y, z);
 
       /*
-      Detecta movimento forte em qualquer eixo
+      Detects strong movement on any axis.
       */
 
       final movementDetected = x.abs() > 12 || y.abs() > 12 || z.abs() > 12;
@@ -33,7 +33,7 @@ class SensorService {
 
         onSquatDetected();
 
-        // Cooldown
+        // Prevents a single movement from being counted more than once.
         Future.delayed(const Duration(milliseconds: 1500), () {
           canCount = true;
         });
@@ -41,7 +41,7 @@ class SensorService {
     });
   }
 
-  /// Para sensores
+  /// Stops listening to accelerometer events.
   void stopListening() {
     _accelerometerSubscription?.cancel();
   }

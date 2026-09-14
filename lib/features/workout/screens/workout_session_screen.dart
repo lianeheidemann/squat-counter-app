@@ -68,9 +68,9 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
       context: context,
       builder: (dialogContext) => AlertDialog(
         icon: const Icon(Icons.emoji_events_rounded, size: 42),
-        title: const Text('Treino concluído!'),
+        title: const Text('Workout complete!'),
         content: const Text(
-          'Parabéns! Você completou todas as séries planejadas.',
+          'Great job! You completed every planned set.',
           textAlign: TextAlign.center,
         ),
         actionsAlignment: MainAxisAlignment.center,
@@ -80,7 +80,7 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
               Navigator.pop(dialogContext);
               resetTraining();
             },
-            child: const Text('Treinar novamente'),
+            child: const Text('Train again'),
           ),
         ],
       ),
@@ -91,12 +91,10 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final controller = widget.controller;
-    final statusColor = trainingStarted
-        ? const Color(0xFF16865B)
-        : colors.onSurfaceVariant;
+    final statusColor = colors.primary;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Treino em andamento')),
+      appBar: AppBar(title: const Text('Workout in progress')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
@@ -109,7 +107,10 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                   vertical: 13,
                 ),
                 decoration: BoxDecoration(
-                  color: statusColor.withValues(alpha: 0.10),
+                  color: statusColor.withValues(alpha: 0.08),
+                  border: Border.all(
+                    color: statusColor.withValues(alpha: 0.35),
+                  ),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Row(
@@ -124,8 +125,8 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                     Expanded(
                       child: Text(
                         trainingStarted
-                            ? 'Contagem automática ativa'
-                            : 'Pronto para começar',
+                            ? 'Automatic counting is active'
+                            : 'Ready to start',
                         style: TextStyle(
                           color: statusColor,
                           fontWeight: FontWeight.w700,
@@ -140,7 +141,7 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                 children: [
                   Expanded(
                     child: ProgressCard(
-                      title: 'Série atual',
+                      title: 'Current set',
                       current: controller.currentSet,
                       total: controller.config.totalSets,
                       icon: Icons.layers_rounded,
@@ -149,7 +150,7 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: ProgressCard(
-                      title: 'Repetições',
+                      title: 'Repetitions',
                       current: controller.currentRep,
                       total: controller.config.repsPerSet,
                       icon: Icons.repeat_rounded,
@@ -172,7 +173,7 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                           ),
                           const SizedBox(width: 10),
                           Text(
-                            'Movimento do celular',
+                            'Phone movement',
                             style: Theme.of(context).textTheme.titleMedium
                                 ?.copyWith(fontWeight: FontWeight.w700),
                           ),
@@ -180,7 +181,7 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        'Leitura do acelerômetro em tempo real',
+                        'Real-time accelerometer readings',
                         style: Theme.of(context).textTheme.bodySmall
                             ?.copyWith(color: colors.onSurfaceVariant),
                       ),
@@ -205,14 +206,14 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                       : Icons.play_arrow_rounded,
                 ),
                 label: Text(
-                  trainingStarted ? 'Sensores ativos' : 'Iniciar contagem',
+                  trainingStarted ? 'Sensors active' : 'Start counting',
                 ),
               ),
               const SizedBox(height: 12),
               OutlinedButton.icon(
                 onPressed: resetTraining,
                 icon: const Icon(Icons.refresh_rounded),
-                label: const Text('Reiniciar treino'),
+                label: const Text('Reset workout'),
               ),
             ],
           ),

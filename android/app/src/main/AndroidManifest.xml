@@ -1,13 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
-        android:label="squat_counter"
+        android:label="Squat Counter"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:enableOnBackInvokedCallback="true">
 
-        <!-- Desabilita o Impeller para evitar problemas
-             de renderização em alguns emuladores -->
+        <!-- Disables Impeller to avoid rendering issues on some emulators. -->
         <meta-data
             android:name="io.flutter.embedding.android.EnableImpeller"
             android:value="false" />
@@ -33,7 +32,7 @@
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
 
-            <!-- Tema exibido enquanto Flutter inicializa -->
+            <!-- Theme displayed while Flutter initializes. -->
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
@@ -46,13 +45,13 @@
             </intent-filter>
         </activity>
 
-        <!-- Necessário para plugins Flutter -->
+        <!-- Required by Flutter plugins. -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
 
-    <!-- Permite descobrir aplicativos com compartilhamento -->
+    <!-- Allows discovery of apps that handle text processing. -->
     <queries>
         <intent>
             <action

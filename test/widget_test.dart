@@ -1,4 +1,4 @@
-import 'package:aplicativo_squat_counter/main.dart';
+import 'package:squat_counter_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -6,17 +6,17 @@ void main() {
   testWidgets('configures and opens a workout', (tester) async {
     await tester.pumpWidget(const SquatCounterApp());
 
-    expect(find.text('Configure seu treino'), findsOneWidget);
-    expect(find.text('30 agachamentos'), findsOneWidget);
+    expect(find.text('Configure your workout'), findsOneWidget);
+    expect(find.text('30 squats'), findsOneWidget);
 
     await tester.tap(find.widgetWithIcon(IconButton, Icons.add_rounded).first);
     await tester.pump();
-    expect(find.text('33 agachamentos'), findsOneWidget);
+    expect(find.text('33 squats'), findsOneWidget);
 
-    await tester.tap(find.text('Começar treino'));
+    await tester.tap(find.text('Start workout'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Treino em andamento'), findsOneWidget);
-    expect(find.text('Iniciar contagem'), findsOneWidget);
+    expect(find.text('Workout in progress'), findsOneWidget);
+    expect(find.text('Start counting'), findsOneWidget);
   });
 }
