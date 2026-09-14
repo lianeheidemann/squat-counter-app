@@ -17,22 +17,32 @@ class ProgressCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final accent = icon == Icons.layers_rounded ? colors.secondary : colors.primary;
     final progress = total == 0 ? 0.0 : (current / total).clamp(0.0, 1.0);
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(18),
+        padding: const EdgeInsets.all(14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(icon, size: 20, color: colors.primary),
+                Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: accent.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(9),
+                  ),
+                  child: Icon(icon, size: 17, color: accent),
+                ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     title,
                     style: TextStyle(
                       color: colors.onSurfaceVariant,
+                      fontSize: 12,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -42,15 +52,15 @@ class ProgressCard extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               '$current / $total',
-              style: Theme.of(context).textTheme.headlineSmall
-                  ?.copyWith(fontWeight: FontWeight.w800),
+              style: const TextStyle(fontSize: 23, fontWeight: FontWeight.w800),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             ClipRRect(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(6),
               child: LinearProgressIndicator(
                 value: progress,
-                minHeight: 8,
+                minHeight: 6,
+                color: accent,
                 backgroundColor: colors.surfaceContainerHighest,
               ),
             ),

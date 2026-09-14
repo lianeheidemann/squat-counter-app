@@ -67,20 +67,22 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
     showDialog<void>(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        icon: const Icon(Icons.emoji_events_rounded, size: 42),
-        title: const Text('Workout complete!'),
+        icon: const Icon(Icons.emoji_events_rounded, color: Color(0xFFFFC857), size: 46),
+        title: const Text('Workout complete!', textAlign: TextAlign.center),
         content: const Text(
-          'Great job! You completed every planned set.',
+          'Great job! You completed every planned set.\n\n“Small steps create big changes.”',
           textAlign: TextAlign.center,
         ),
-        actionsAlignment: MainAxisAlignment.center,
         actions: [
-          FilledButton(
-            onPressed: () {
-              Navigator.pop(dialogContext);
-              resetTraining();
-            },
-            child: const Text('Train again'),
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+                resetTraining();
+              },
+              child: const Text('Train again'),
+            ),
           ),
         ],
       ),
@@ -91,52 +93,69 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final controller = widget.controller;
-    final statusColor = colors.primary;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Workout in progress')),
+      appBar: AppBar(
+        title: const Text('Squat Counter'),
+        actions: [
+          IconButton(
+            tooltip: 'More options',
+            onPressed: () {},
+            icon: const Icon(Icons.more_horiz_rounded),
+          ),
+          const SizedBox(width: 10),
+        ],
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+          padding: const EdgeInsets.fromLTRB(18, 8, 18, 22),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 13,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
                 decoration: BoxDecoration(
-                  color: statusColor.withValues(alpha: 0.08),
-                  border: Border.all(
-                    color: statusColor.withValues(alpha: 0.35),
-                  ),
+                  color: colors.primary.withValues(alpha: 0.06),
+                  border: Border.all(color: colors.primary.withValues(alpha: 0.38)),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Row(
                   children: [
-                    Icon(
-                      trainingStarted
-                          ? Icons.sensors_rounded
-                          : Icons.pause_circle_outline_rounded,
-                      color: statusColor,
+                    Container(
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: colors.primary),
+                        color: colors.primary.withValues(alpha: 0.1),
+                      ),
+                      child: Icon(
+                        trainingStarted ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                        color: colors.primary,
+                        size: 20,
+                      ),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 12),
                     Expanded(
-                      child: Text(
-                        trainingStarted
-                            ? 'Automatic counting is active'
-                            : 'Ready to start',
-                        style: TextStyle(
-                          color: statusColor,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            trainingStarted ? 'Workout in progress' : 'Ready to start',
+                            style: TextStyle(color: colors.primary, fontWeight: FontWeight.w800),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            trainingStarted ? "Keep going! You've got this." : 'Secure your phone before starting.',
+                            style: TextStyle(color: colors.onSurfaceVariant, fontSize: 12),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: 14),
               Row(
                 children: [
                   Expanded(
@@ -147,7 +166,7 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                       icon: Icons.layers_rounded,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: ProgressCard(
                       title: 'Repetitions',
@@ -158,34 +177,23 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: 14),
               Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
-                          Icon(
-                            Icons.phone_android_rounded,
-                            color: colors.primary,
+                          Icon(Icons.phone_android_rounded, color: colors.primary, size: 20),
+                          const SizedBox(width: 8),
+                          const Expanded(
+                            child: Text('Phone movement', style: TextStyle(fontWeight: FontWeight.w700)),
                           ),
-                          const SizedBox(width: 10),
-                          Text(
-                            'Phone movement',
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(fontWeight: FontWeight.w700),
-                          ),
+                          Text('LIVE', style: TextStyle(color: colors.primary, fontSize: 10, fontWeight: FontWeight.w800)),
                         ],
                       ),
-                      const SizedBox(height: 6),
-                      Text(
-                        'Real-time accelerometer readings',
-                        style: Theme.of(context).textTheme.bodySmall
-                            ?.copyWith(color: colors.onSurfaceVariant),
-                      ),
-                      const SizedBox(height: 18),
+                      const SizedBox(height: 15),
                       Row(
                         children: [
                           _SensorValue(axis: 'X', value: x),
@@ -197,22 +205,16 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
               ElevatedButton.icon(
                 onPressed: trainingStarted ? null : startTraining,
-                icon: Icon(
-                  trainingStarted
-                      ? Icons.sensors_rounded
-                      : Icons.play_arrow_rounded,
-                ),
-                label: Text(
-                  trainingStarted ? 'Sensors active' : 'Start counting',
-                ),
+                icon: Icon(trainingStarted ? Icons.sensors_rounded : Icons.play_arrow_rounded),
+                label: Text(trainingStarted ? 'Automatic counting active' : 'Start counting'),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               OutlinedButton.icon(
                 onPressed: resetTraining,
-                icon: const Icon(Icons.refresh_rounded),
+                icon: const Icon(Icons.refresh_rounded, size: 19),
                 label: const Text('Reset workout'),
               ),
             ],
@@ -229,22 +231,24 @@ class _SensorValue extends StatelessWidget {
   const _SensorValue({required this.axis, required this.value});
 
   @override
-  Widget build(BuildContext context) => Expanded(
-    child: Column(
-      children: [
-        Text(
-          axis,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-            fontWeight: FontWeight.w600,
-          ),
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 3),
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          color: colors.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(12),
         ),
-        const SizedBox(height: 5),
-        Text(
-          value.toStringAsFixed(2),
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+        child: Column(
+          children: [
+            Text(axis, style: TextStyle(color: colors.onSurfaceVariant, fontSize: 11)),
+            const SizedBox(height: 4),
+            Text(value.toStringAsFixed(2), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
+          ],
         ),
-      ],
-    ),
-  );
+      ),
+    );
+  }
 }

@@ -21,35 +21,31 @@ class NumberSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final accent = icon == Icons.layers_rounded ? colors.secondary : colors.primary;
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
         child: Row(
           children: [
             Container(
-              width: 48,
-              height: 48,
+              width: 40,
+              height: 40,
               decoration: BoxDecoration(
-                color: colors.primaryContainer,
-                borderRadius: BorderRadius.circular(16),
+                color: accent.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: colors.primary),
+              child: Icon(icon, color: accent, size: 21),
             ),
-            const SizedBox(width: 14),
+            const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleMedium
-                        ?.copyWith(fontWeight: FontWeight.w700),
-                  ),
-                  const SizedBox(height: 3),
+                  Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
+                  const SizedBox(height: 2),
                   Text(
                     subtitle,
-                    style: Theme.of(context).textTheme.bodySmall
-                        ?.copyWith(color: colors.onSurfaceVariant),
+                    style: TextStyle(fontSize: 12, color: colors.onSurfaceVariant),
                   ),
                 ],
               ),
@@ -60,13 +56,13 @@ class NumberSelector extends StatelessWidget {
               onPressed: onDecrease,
             ),
             SizedBox(
-              width: 48,
+              width: 42,
               child: Semantics(
                 label: '$title: $value',
                 child: Text(
                   '$value',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
                 ),
               ),
             ),
@@ -74,6 +70,7 @@ class NumberSelector extends StatelessWidget {
               tooltip: 'Increase $title',
               icon: Icons.add_rounded,
               onPressed: onIncrease,
+              emphasized: true,
             ),
           ],
         ),
@@ -86,17 +83,33 @@ class _StepButton extends StatelessWidget {
   final String tooltip;
   final IconData icon;
   final VoidCallback? onPressed;
+  final bool emphasized;
+
   const _StepButton({
     required this.tooltip,
     required this.icon,
-    this.onPressed,
+    required this.onPressed,
+    this.emphasized = false,
   });
 
   @override
-  Widget build(BuildContext context) => IconButton.filledTonal(
-    tooltip: tooltip,
-    onPressed: onPressed,
-    icon: Icon(icon),
-    constraints: const BoxConstraints.tightFor(width: 44, height: 44),
-  );
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return IconButton(
+      tooltip: tooltip,
+      onPressed: onPressed,
+      icon: Icon(icon, size: 20),
+      style: IconButton.styleFrom(
+        foregroundColor: emphasized ? colors.primary : colors.onSurfaceVariant,
+        backgroundColor: emphasized
+            ? colors.primary.withValues(alpha: 0.12)
+            : colors.surfaceContainerHighest,
+        disabledForegroundColor: colors.onSurfaceVariant.withValues(alpha: 0.35),
+        minimumSize: const Size(38, 38),
+        maximumSize: const Size(38, 38),
+        padding: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+    );
+  }
 }

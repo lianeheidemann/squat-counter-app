@@ -44,14 +44,14 @@ jobs:
       - name: Run tests
         run: flutter test
 
-      - name: Build debug APK
-        run: flutter build apk --debug
+      - name: Build release APK
+        run: flutter build apk --release
 
       - name: Upload temporary APK
         uses: actions/upload-artifact@v4
         with:
-          name: squat-counter-test-apk
-          path: build/app/outputs/flutter-apk/app-debug.apk
+          name: squat-counter-v1.1.0-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
           retention-days: 7
           if-no-files-found: error
 
@@ -60,7 +60,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create v1.0.0 \
-            build/app/outputs/flutter-apk/app-debug.apk#squat-counter-v1.0.0-debug.apk \
-            --title "v1.0.0 - Dark Green Interface" \
-            --notes "First test release of Squat Counter. Includes the dark green interface, English naming throughout the project, the new launcher icon, and automatic squat counting with the phone accelerometer. This is a debug APK intended for testing."
+          gh release create v1.1.0             build/app/outputs/flutter-apk/app-release.apk#squat-counter-v1.1.0.apk             --title "v1.1.0 - Refined Workout Interface"             --notes "New compact dark interface inspired by the approved visual reference. Includes refined typography, smaller controls and cards, clearer workout progress, improved completion dialog, and the existing automatic squat counting features."
