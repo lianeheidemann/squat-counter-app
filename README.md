@@ -1,3 +1,7 @@
+<div align="center" >
+
+<img width="150" src="assets/squat-counter-icon.png">
+
 # Squat Counter App
 
 ![Dart](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)
@@ -5,9 +9,12 @@
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
-A Flutter mobile app that uses the phone's accelerometer to automatically detect and count squats, tracking repetitions and sets in real time.
+A Flutter mobile app that uses the phone's accelerometer to automatically<br>
+detect and count squats, tracking repetitions and sets in real time.
 
 <img width="35%" src="https://github.com/user-attachments/assets/0007261c-f7ac-48e4-80b8-3c0322c9f783" alt="Squat Counter App demonstration" />
+
+</div>
 
 ## Features
 
