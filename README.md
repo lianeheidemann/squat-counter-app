@@ -3,28 +3,37 @@
 ![Dart](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)
 ![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
-## Flutter Mobile Application
+A Flutter mobile app that uses the phone's accelerometer to automatically detect and count squats, tracking repetitions and sets in real time.
 
-**Squat Counter** uses the smartphone accelerometer to detect squat movements and automatically track:
+<img width="35%" src="https://github.com/user-attachments/assets/0007261c-f7ac-48e4-80b8-3c0322c9f783" alt="Squat Counter App demonstration" />
 
-- Repetitions
-- Sets
-- Workout progress
+## Features
 
-Users configure the number of repetitions per set and the total number of sets.
+- Automatic squat detection via accelerometer, no manual input required
+- Configurable number of repetitions per set and total sets
+- Live workout progress tracking
 
----
+## Tech Stack
 
-## Technologies
+- [Flutter](https://flutter.dev) / Dart
+- [sensors_plus](https://pub.dev/packages/sensors_plus) for accelerometer data
+- Android SDK
 
-- Flutter 3.41.4
-- Dart
-- sensors_plus (accelerometer)
-- Android SDK 36.1.0
-- VS Code and Android Studio for emulation
+## Getting Started
 
----
+### Prerequisites
+
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) (Dart ^3.11.5)
+- Android device or emulator
+
+### Run locally
+
+```bash
+flutter pub get
+flutter run
+```
 
 ## Project Structure
 
@@ -47,19 +56,14 @@ lib/
  └── main.dart
 ```
 
----
+## How It Works
 
-## Application Flow
+1. The user sets up the workout (reps per set and total sets).
+2. The app starts reading the accelerometer.
+3. Squat movements are detected from the sensor data.
+4. Repetitions and sets are counted and displayed automatically.
+5. The workout ends once the configured goal is reached.
 
-1. The user configures the workout.
-2. The application starts the sensors.
-3. Movement is detected through the accelerometer.
-4. Repetitions are counted automatically.
-5. Sets are tracked by the system.
-6. The workout ends when the goal is reached.
+## License
 
----
-
-## Demonstration
-
-<img width="35%" src="https://github.com/user-attachments/assets/0007261c-f7ac-48e4-80b8-3c0322c9f783" alt="Squat Counter App demonstration" />
+Distributed under the [MIT License](LICENSE).
