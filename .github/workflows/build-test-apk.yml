@@ -6,7 +6,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -54,3 +54,13 @@ jobs:
           path: build/app/outputs/flutter-apk/app-debug.apk
           retention-days: 7
           if-no-files-found: error
+
+      - name: Publish GitHub release
+        if: startsWith(github.event.head_commit.message, 'Release ')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create v1.0.0 \
+            build/app/outputs/flutter-apk/app-debug.apk#squat-counter-v1.0.0-debug.apk \
+            --title "v1.0.0 - Dark Green Interface" \
+            --notes "First test release of Squat Counter. Includes the dark green interface, English naming throughout the project, the new launcher icon, and automatic squat counting with the phone accelerometer. This is a debug APK intended for testing."
