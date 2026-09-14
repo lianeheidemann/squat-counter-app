@@ -29,6 +29,9 @@ jobs:
           channel: stable
           cache: true
 
+      - name: Generate Android project files
+        run: flutter create --platforms=android --project-name aplicativo_squat_counter --org com.lianeheidemann .
+
       - name: Install dependencies
         run: flutter pub get
 
